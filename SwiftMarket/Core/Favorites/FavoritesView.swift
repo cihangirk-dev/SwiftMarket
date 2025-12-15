@@ -47,18 +47,15 @@ struct FavoritesView: View {
                             NavigationLink {
                                 ProductDetailView(product: product)
                             } label: {
-                                // YENİ KART KULLANIMI
                                 ProductCardView(
                                     product: product,
-                                    isFavorite: true, // Burası favoriler sayfası, o yüzden hep true
+                                    isFavorite: true,
                                     onFavoriteToggle: {
-                                        // Kalbe basınca silme işlemi yap
                                         withAnimation {
                                             viewModel.deleteFavorite(item, context: modelContext)
                                         }
                                     }
                                 )
-                                // ESKİ .overlay(...) KISMI SİLİNDİ
                             }
                         }
                     }

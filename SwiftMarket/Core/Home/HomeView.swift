@@ -11,10 +11,7 @@ import Kingfisher
 
 struct HomeView: View {
     
-    // ViewModel: Verileri yöneten beyin
     @StateObject private var viewModel = HomeViewModel()
-    
-    // Veritabanı bağlantıları (Favori işlemleri için)
     @Environment(\.modelContext) private var modelContext
     @Query private var favoriteItems: [FavoriteItem]
     
@@ -22,61 +19,48 @@ struct HomeView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 
-                // --- 1. SABİT ÜST ALAN (HEADER) ---
                 VStack(spacing: 0) {
                     HeaderView()
                         .padding(.horizontal)
-                        .padding(.top, 8) // Dinamik ada / Çentik boşluğu
+                        .padding(.top, 8)
                         .padding(.bottom, 12)
                 }
                 .background(Color.white)
-                // Altına hafif gölge ekleyerek içerikten ayıralım
                 .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 5)
-                .zIndex(1) // Katman olarak en üstte dursun
+                .zIndex(1)
                 
-                // --- 2. KAYDIRILABİLİR İÇERİK ---
                 ScrollView {
-                    LazyVStack(spacing: 24) { // Bölümler arası boşluk
+                    LazyVStack(spacing: 24) {
                         
-                        // Yükleniyor Durumu (Sadece ilk açılışta)
                         if viewModel.isLoading && viewModel.categories.isEmpty {
                             ProgressView("Loading Market...")
                                 .padding(.top, 50)
                         } else {
                             
-                            // A. VİTRİN SLIDER (En Yüksek İndirimler)
                             if !viewModel.sliderProducts.isEmpty {
                                 DiscountSliderView(products: viewModel.sliderProducts)
-                                    .padding(.top, 10) // Gölgeye yapışmaması için boşluk
+                                    .padding(.top, 10)
                             }
                             
-                            // B. NETFLIX RAFLARI (Kategoriler)
-                            // Kategorileri döngüye alıp her biri için raf oluşturuyoruz
                             ForEach(viewModel.categories) { category in
-                                // Eğer bu kategoriye ait ürünler yüklendiyse ve boş değilse rafı çiz
                                 if let products = viewModel.productsByCategory[category.slug], !products.isEmpty {
                                     
-                                    // Başlık Temizliği (örn: "womens-jewellery" -> "Womens Jewellery")
                                     let cleanTitle = category.name.replacingOccurrences(of: "-", with: " ").capitalized
-                                    
                                     ProductRowView(title: cleanTitle, products: products)
                                 }
                             }
                             
-                            // C. YÜKLEME GÖSTERGESİ (Alt kısım)
-                            // Eğer hala yüklenmesi gereken kategoriler varsa altta ikon göster
                             if viewModel.productsByCategory.count < viewModel.categories.count {
                                 ProgressView()
                                     .padding()
                             }
                         }
                     }
-                    .padding(.bottom, 50) // En altta rahat boşluk
+                    .padding(.bottom, 50)
                 }
             }
-            .background(Color(.systemGray6)) // Tüm sayfanın arka planı açık gri
+            .background(Color(.systemGray6))
             .task {
-                // Sayfa açıldığında veriler yoksa çek
                 if viewModel.categories.isEmpty {
                     await viewModel.fetchAllData()
                 }
@@ -84,12 +68,10 @@ struct HomeView: View {
         }
     }
     
-    // --- YARDIMCI GÖRÜNÜM: Header ---
     @ViewBuilder
     func HeaderView() -> some View {
         HStack(spacing: 16) {
             
-            // SOL: Logo ve Uygulama İsmi
             HStack(spacing: 8) {
                 Image("AppLogo")
                     .resizable()
@@ -104,9 +86,6 @@ struct HomeView: View {
             
             Spacer()
             
-            // SAĞ: Butonlar
-            
-            // 1. Arama Butonu (Yeni Sayfaya Gider)
             NavigationLink {
                 SearchView(viewModel: viewModel)
             } label: {
@@ -115,11 +94,10 @@ struct HomeView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(Color("SecondColor"))
                     .padding(10)
-                    .background(Color(.systemGray6)) // Buton arka planı
+                    .background(Color(.systemGray6))
                     .clipShape(Circle())
             }
             
-            // 2. Profil Butonu
             NavigationLink {
                 ProfileView()
             } label: {
@@ -157,7 +135,6 @@ struct HomeView: View {
     }
 }
 
-// --- YARDIMCI STRUCT: Slider (Dosya bütünlüğü için burada tutuyoruz) ---
 struct DiscountSliderView: View {
     let products: [Product]
     

@@ -21,7 +21,7 @@ struct LoginView: View {
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width * 0.6)
                     Text("SWIFT MARKET")
-                        .font(.system(size: 32, weight: .heavy, design: .rounded))
+                        .font(.system(size: 23, weight: .heavy, design: .rounded))
                         .foregroundStyle(Color("SecondColor"))
                 }
                 .padding(.bottom, 40)

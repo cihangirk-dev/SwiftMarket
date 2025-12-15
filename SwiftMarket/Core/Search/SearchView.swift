@@ -14,21 +14,18 @@ struct SearchView: View {
     @FocusState private var isFocused: Bool
     
     @State private var searchText = ""
-    @State private var selectedCategory: Category? // Kategori seçimi geri geldi
+    @State private var selectedCategory: Category?
     
-    // API isteğini geciktirmek için (Debounce)
     @State private var searchTask: Task<Void, Never>?
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query private var favoriteItems: [FavoriteItem]
     
-    // Kategori butonları için grid
     private let categoryColumns = [
         GridItem(.adaptive(minimum: 100, maximum: 150), spacing: 10)
     ]
     
-    // Ürünler için grid
     private let productColumns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
@@ -37,7 +34,6 @@ struct SearchView: View {
     var body: some View {
         VStack(spacing: 0) {
             
-            // --- 1. ARAMA HEADER ---
             HStack(spacing: 12) {
                 Button { dismiss() } label: {
                     Image(systemName: "chevron.left")
@@ -51,20 +47,17 @@ struct SearchView: View {
                         .focused($isFocused)
                         .submitLabel(.search)
                         .onChange(of: searchText) { oldValue, newValue in
-                            // Yazı yazılmaya başlarsa kategori seçimini iptal et
                             if !newValue.isEmpty { selectedCategory = nil }
                             
-                            // API Araması (Debounce)
                             searchTask?.cancel()
                             searchTask = Task {
-                                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 sn bekle
+                                try? await Task.sleep(nanoseconds: 500_000_000)
                                 if !Task.isCancelled && !newValue.isEmpty {
                                     await viewModel.performSearch(query: newValue)
                                 }
                             }
                         }
                     
-                    // Temizleme Butonu
                     if !searchText.isEmpty {
                         Button {
                             searchText = ""
@@ -82,11 +75,9 @@ struct SearchView: View {
             .background(Color.white)
             .shadow(color: .black.opacity(0.05), radius: 2, y: 2)
             
-            // --- 2. İÇERİK ALANI ---
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    // DURUM A: Hiçbir şey seçili değil -> Kategorileri Göster
                     if searchText.isEmpty && selectedCategory == nil {
                         VStack(alignment: .leading, spacing: 15) {
                             Text("Categories")
@@ -96,10 +87,9 @@ struct SearchView: View {
                             LazyVGrid(columns: categoryColumns, spacing: 12) {
                                 ForEach(viewModel.categories) { category in
                                     Button {
-                                        // Kategori seçince klavyeyi kapat ve seçimi yap
                                         selectedCategory = category
                                         isFocused = false
-                                        searchText = "" // Yazıyı temizle
+                                        searchText = ""
                                     } label: {
                                         Text(category.name.replacingOccurrences(of: "-", with: " ").capitalized)
                                             .font(.caption)
@@ -120,20 +110,14 @@ struct SearchView: View {
                         .padding()
                         
                     } else {
-                        // DURUM B ve C: Bir sonuç gösterilecek (Ya Arama ya Kategori)
-                        
-                        // Hangi ürün listesini göstereceğiz?
                         let productsToShow: [Product] = {
                             if let category = selectedCategory {
-                                // Kategori seçiliyse hafızadan getir (HIZLI)
                                 return viewModel.productsByCategory[category.slug] ?? []
                             } else {
-                                // Yazı yazıldıysa API sonuçlarını getir
                                 return viewModel.searchResults
                             }
                         }()
                         
-                        // Başlık ve Temizle Butonu
                         HStack {
                             if let category = selectedCategory {
                                 Text(category.name.capitalized)
@@ -143,7 +127,6 @@ struct SearchView: View {
                             
                             Spacer()
                             
-                            // Filtreyi Temizle Butonu
                             if selectedCategory != nil {
                                 Button("Clear Filter") {
                                     selectedCategory = nil
@@ -158,9 +141,7 @@ struct SearchView: View {
                         .padding(.horizontal)
                         .padding(.top)
                         
-                        // Yükleniyor veya Boş Durumu
                         if searchText.isEmpty && selectedCategory == nil {
-                            // Bu duruma düşmez ama güvenlik için
                             EmptyView()
                         } else if viewModel.isSearching && selectedCategory == nil {
                             ProgressView("Searching...")
@@ -175,7 +156,6 @@ struct SearchView: View {
                             }
                             .padding(.top, 50)
                         } else {
-                            // Ürün Listesi
                             LazyVGrid(columns: productColumns, spacing: 16) {
                                 ForEach(productsToShow) { product in
                                     let isFavorite = favoriteItems.contains(where: { $0.productId == product.id })
@@ -205,7 +185,6 @@ struct SearchView: View {
         
     }
     
-    // Favori Fonksiyonu
     private func toggleFavorite(product: Product) {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()

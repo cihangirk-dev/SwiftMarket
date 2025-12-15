@@ -18,9 +18,7 @@ struct User: Codable, Identifiable {
     let token: String
     
     enum CodingKeys: String, CodingKey {
-        case id, username, email, gender, image
-        case firstName = "firstName"
-        case lastName = "lastName"
+        case id, username, email, gender, image, lastName, firstName
         case token = "accessToken"
     }
 }

@@ -97,10 +97,9 @@ struct CartView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .padding(.bottom, 80) // Listeyi biraz yukarı ittik, checkout butonu için
+                    .padding(.bottom, 80)
                 }
                 
-                // --- BOTTOM BAR ---
                 if !cartItems.isEmpty {
                     VStack(spacing: 0) {
                         Divider()

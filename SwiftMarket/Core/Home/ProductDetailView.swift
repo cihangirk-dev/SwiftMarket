@@ -31,7 +31,6 @@ struct ProductDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     
-                    // --- RESİM ALANI ---
                     ZStack(alignment: .topTrailing) {
                         KFImage(URL(string: product.thumbnail))
                             .placeholder {
@@ -55,7 +54,6 @@ struct ProductDetailView: View {
                     }
                     .padding(.top, 10)
                     
-                    // --- BİLGİ ALANI ---
                     VStack(alignment: .leading, spacing: 12) {
                         
                         HStack(alignment: .top) {
@@ -87,7 +85,6 @@ struct ProductDetailView: View {
                         
                         Divider().padding(.vertical, 20)
                         
-                        // --- ADET SEÇİCİ ---
                         HStack {
                             Text("Quantity")
                                 .font(.headline)
@@ -126,12 +123,10 @@ struct ProductDetailView: View {
                     }
                     .padding(.horizontal)
                     
-                    // İçerik butonun altında kalmasın diye boşluk
                     Spacer().frame(height: 120)
                 }
             }
             
-            // --- ALT BAR (SABİT) ---
             VStack(spacing: 0) {
                 Divider()
                 HStack {
@@ -161,7 +156,7 @@ struct ProductDetailView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
-                .padding(.bottom, 10) // Safe Area
+                .padding(.bottom, 10)
             }
             .background(Color.white)
             .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
@@ -181,17 +176,12 @@ struct ProductDetailView: View {
                         .padding(8).background(Color.white.opacity(0.8)).clipShape(Circle())
                 }
             }
-            // YENİ: Detay sayfasında Native Tab Bar'ı gizle
             ToolbarItem(placement: .automatic) {
-                // Boş ama native tab bar'ın gizlenmesini sağlayan ayar
-                // iOS 16+ için:
             }
         }
-        // Native Tab Bar'ı detayda gizlemek için en temiz yöntem:
         .toolbar(.hidden, for: .tabBar)
     }
     
-    // --- FONKSİYONLAR ---
     private func addToCart() {
         if let existingItem = cartItems.first(where: { $0.productId == product.id }) {
             existingItem.quantity += quantity

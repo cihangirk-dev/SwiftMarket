@@ -16,7 +16,6 @@ class ProfileViewModel: ObservableObject {
         loadUser()
     }
     
-    // Hafızadaki kullanıcıyı geri getir
     func loadUser() {
         if let savedData = UserDefaults.standard.data(forKey: "savedUser") {
             if let decodedUser = try? JSONDecoder().decode(User.self, from: savedData) {
@@ -25,13 +24,10 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    // Çıkış Yap
     func logout() {
-        // 1. Hafızayı temizle
         UserDefaults.standard.set(false, forKey: "isLoggedIn")
         UserDefaults.standard.removeObject(forKey: "savedUser")
         
-        // 2. Veriyi sıfırla
         self.user = nil
     }
 }

@@ -10,22 +10,18 @@ import SwiftData
 
 class CartViewModel: ObservableObject {
     
-    // Toplam tutarı hesapla
     func calculateTotal(items: [CartItem]) -> Double {
         return items.reduce(0) { $0 + $1.totalValue }
     }
     
-    // Ürünü tamamen sil
     func deleteItem(_ item: CartItem, context: ModelContext) {
         context.delete(item)
     }
     
-    // Adet artır
     func incrementQuantity(_ item: CartItem) {
         item.quantity += 1
     }
     
-    // Adet azalt
     func decrementQuantity(_ item: CartItem) {
         if item.quantity > 1 {
             item.quantity -= 1

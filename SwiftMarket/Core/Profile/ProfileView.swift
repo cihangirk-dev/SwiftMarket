@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import Kingfisher // 1. Kütüphaneyi ekledik
+import Kingfisher
 
 struct ProfileView: View {
     
     @StateObject private var viewModel = ProfileViewModel()
     
-    // Çıkış yapınca Login ekranına atmak için AppStorage'ı dinliyoruz
     @AppStorage("isLoggedIn") var isLoggedIn = false
     
     var body: some View {
@@ -20,9 +19,7 @@ struct ProfileView: View {
             ScrollView {
                 VStack(spacing: 24) {
                     
-                    // --- 1. PROFIL BAŞLIĞI ---
                     VStack(spacing: 12) {
-                        // Profil Resmi (KINGFISHER GÜNCELLEMESİ)
                         KFImage(URL(string: viewModel.user?.image ?? ""))
                             .placeholder {
                                 Image(systemName: "person.circle.fill")
@@ -37,7 +34,6 @@ struct ProfileView: View {
                             .overlay(Circle().stroke(Color.white, lineWidth: 4))
                             .shadow(radius: 5)
                         
-                        // İsim ve Email
                         VStack(spacing: 4) {
                             Text("\(viewModel.user?.firstName ?? "Guest") \(viewModel.user?.lastName ?? "User")")
                                 .font(.title2)
@@ -51,10 +47,8 @@ struct ProfileView: View {
                     }
                     .padding(.top, 20)
                     
-                    // --- 2. MENÜ LİSTESİ ---
                     VStack(spacing: 16) {
                         
-                        // Grup 1: Hesap
                         SettingsGroup {
                             SettingsRow(icon: "bag.fill", title: "My Orders")
                             Divider()
@@ -63,14 +57,12 @@ struct ProfileView: View {
                             SettingsRow(icon: "creditcard.fill", title: "Payment Methods")
                         }
                         
-                        // Grup 2: Uygulama
                         SettingsGroup {
                             SettingsRow(icon: "gearshape.fill", title: "Settings")
                             Divider()
                             SettingsRow(icon: "questionmark.circle.fill", title: "Help & Support")
                         }
                         
-                        // Çıkış Butonu
                         Button {
                             viewModel.logout()
                         } label: {
@@ -97,9 +89,6 @@ struct ProfileView: View {
     }
 }
 
-// --- YARDIMCI GÖRÜNÜMLER ---
-
-// Menü Grubu (Beyaz kutu)
 struct SettingsGroup<Content: View>: View {
     let content: Content
     
@@ -117,7 +106,6 @@ struct SettingsGroup<Content: View>: View {
     }
 }
 
-// Menü Satırı
 struct SettingsRow: View {
     let icon: String
     let title: String
@@ -140,7 +128,6 @@ struct SettingsRow: View {
                 .foregroundStyle(.gray.opacity(0.5))
         }
         .padding()
-        // Tıklanabilir gibi hissettirmek için arka plan
         .contentShape(Rectangle())
     }
 }

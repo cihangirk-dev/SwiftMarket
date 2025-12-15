@@ -17,17 +17,15 @@ struct ProductCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             
-            // --- RESİM ALANI ---
             ZStack(alignment: .top) {
-                // 1. Kingfisher ile Resim
                 KFImage(URL(string: product.thumbnail))
-                    .placeholder { // Resim yüklenirken ne görünsün?
+                    .placeholder {
                         ZStack {
                             Color.gray.opacity(0.1)
                             ProgressView()
                         }
                     }
-                    .fade(duration: 0.25) // Yüklenince yumuşak geçiş
+                    .fade(duration: 0.25)
                     .resizable()
                     .scaledToFit()
                     .aspectRatio(1, contentMode: .fit)
@@ -36,9 +34,7 @@ struct ProductCardView: View {
                     .cornerRadius(12)
                     .clipped()
                 
-                // 2. Üst Bar (İndirim ve Favori)
                 HStack {
-                    // SOL: İndirim Rozeti
                     if product.discountPercentage > 0 {
                         Text("-\(Int(product.discountPercentage))%")
                             .font(.caption2)
@@ -55,7 +51,6 @@ struct ProductCardView: View {
                     
                     Spacer()
                     
-                    // SAĞ: Favori Butonu
                     Button {
                         onFavoriteToggle()
                     } label: {
@@ -73,7 +68,6 @@ struct ProductCardView: View {
             .background(Color.white)
             .cornerRadius(12)
             
-            // --- ÜRÜN BİLGİLERİ (Burası Aynı) ---
             VStack(alignment: .leading, spacing: 4) {
                 Text(product.brand ?? "General")
                     .font(.caption)
@@ -121,6 +115,3 @@ struct ProductCardView: View {
         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
     }
 }
-//#Preview {
-//    ProductCardView(product: Product)
-//}

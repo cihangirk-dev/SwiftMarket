@@ -19,21 +19,19 @@ struct CategoryRowView: View {
                 .padding(.horizontal)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) { // Butonlar arası boşluk
+                HStack(spacing: 10) {
                     ForEach(categories) { category in
                         Button {
                             print("Kategori seçildi: \(category.name)")
                         } label: {
-                            // Metni Düzenleme: Tireleri boşluk yap ve Baş Harfleri Büyüt
                             Text(category.name.replacingOccurrences(of: "-", with: " ").capitalized)
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .foregroundStyle(Color("SecondColor")) // Yazı rengi koyu
-                                .padding(.horizontal, 20) // Yanlardan genişlik
-                                .padding(.vertical, 12)   // Dikey yükseklik
-                                .background(Color.white)  // Arkaplan BEYAZ
-                                .clipShape(Capsule())     // HAP ŞEKLİ (Uzun isme göre uzar)
-                                // Hafif gölge ve ince çerçeve ile belirginleştirme
+                                .foregroundStyle(Color("SecondColor"))
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 12)
+                                .background(Color.white)
+                                .clipShape(Capsule())
                                 .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
                                 .overlay(
                                     Capsule()
@@ -43,7 +41,7 @@ struct CategoryRowView: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 10) // Alt gölgenin kesilmemesi için boşluk
+                .padding(.bottom, 10)
             }
         }
     }

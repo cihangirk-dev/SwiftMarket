@@ -13,11 +13,9 @@ struct CategoryDetailView: View {
     let title: String
     let products: [Product]
     
-    // Favori işlemleri için gerekli bağlantılar
     @Environment(\.modelContext) private var modelContext
     @Query private var favoriteItems: [FavoriteItem]
     
-    // Izgara Ayarı
     private let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
@@ -27,7 +25,6 @@ struct CategoryDetailView: View {
         ScrollView {
             VStack(spacing: 20) {
                 
-                // Ürün Sayısı Bilgisi
                 HStack {
                     Text("\(products.count) products found")
                         .font(.caption)
@@ -36,7 +33,6 @@ struct CategoryDetailView: View {
                 }
                 .padding(.horizontal)
                 
-                // Ürün Listesi (Grid)
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(products) { product in
                         
@@ -59,12 +55,11 @@ struct CategoryDetailView: View {
             }
             .padding(.vertical)
         }
-        .navigationTitle(title) // Sayfa başlığı kategori adı olacak
+        .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(.systemGray6))
     }
     
-    // Favori Fonksiyonu (Standart)
     private func toggleFavorite(product: Product) {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()

@@ -20,7 +20,6 @@ struct ProductRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             
-            // --- BAŞLIK ALANI ---
             HStack {
                 Text(title)
                     .font(.title3)
@@ -40,7 +39,6 @@ struct ProductRowView: View {
             }
             .padding(.horizontal)
             
-            // --- YATAY LİSTE (RAF) ---
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(products) { product in
@@ -50,7 +48,6 @@ struct ProductRowView: View {
                         NavigationLink {
                             ProductDetailView(product: product)
                         } label: {
-                            // Burada zaten güncellediğimiz Kingfisher'lı CardView'ı kullanıyoruz
                             ProductCardView(
                                 product: product,
                                 isFavorite: isFavorite,

@@ -26,8 +26,8 @@ class FavoritesViewModel: ObservableObject {
             stock: 0,
             brand: item.brand,
             category: item.category,
-            thumbnail: item.image,
-            images: []
+            thumbnail: item.thumbnail,
+            images: item.images
         )
     }
 }

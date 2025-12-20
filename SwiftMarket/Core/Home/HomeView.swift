@@ -49,11 +49,6 @@ struct HomeView: View {
                                     ProductRowView(title: cleanTitle, products: products)
                                 }
                             }
-                            
-                            if viewModel.productsByCategory.count < viewModel.categories.count {
-                                ProgressView()
-                                    .padding()
-                            }
                         }
                     }
                     .padding(.bottom, 50)
@@ -72,7 +67,7 @@ struct HomeView: View {
     func HeaderView() -> some View {
         HStack(spacing: 16) {
             
-            HStack(spacing: 8) {
+            HStack(spacing: 0) {
                 Image("AppLogo")
                     .resizable()
                     .scaledToFit()
@@ -109,28 +104,6 @@ struct HomeView: View {
                     .background(Color(.systemGray6))
                     .clipShape(Circle())
             }
-        }
-    }
-    
-    private func toggleFavorite(product: Product) {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-        
-        if let existingFav = favoriteItems.first(where: { $0.productId == product.id }) {
-            modelContext.delete(existingFav)
-        } else {
-            let newFav = FavoriteItem(
-                productId: product.id,
-                title: product.title,
-                price: product.price,
-                image: product.thumbnail,
-                brand: product.brand,
-                desc: product.description,
-                rating: product.rating,
-                discountPercentage: product.discountPercentage,
-                category: product.category
-            )
-            modelContext.insert(newFav)
         }
     }
 }

@@ -13,18 +13,20 @@ class FavoriteItem {
     @Attribute(.unique) var productId: Int
     var title: String
     var price: Double
-    var image: String
+    var thumbnail: String
+    var images: [String]
     var brand: String?
     var desc: String
     var rating: Double
     var discountPercentage: Double
     var category: String
     
-    init(productId: Int, title: String, price: Double, image: String, brand: String?, desc: String, rating: Double, discountPercentage: Double, category: String) {
+    init(productId: Int, title: String, price: Double, thumbnail: String, images: [String], brand: String?, desc: String, rating: Double, discountPercentage: Double, category: String) {
         self.productId = productId
         self.title = title
         self.price = price
-        self.image = image
+        self.thumbnail = thumbnail
+        self.images = images
         self.brand = brand
         self.desc = desc
         self.rating = rating

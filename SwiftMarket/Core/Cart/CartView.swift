@@ -48,7 +48,7 @@ struct CartView: View {
                                     Text(item.title)
                                         .font(.headline)
                                         .foregroundStyle(Color("SecondColor"))
-                                        .lineLimit(1)
+                                        .lineLimit(2)
                                     
                                     HStack(spacing: 0) {
                                         Button { viewModel.decrementQuantity(item) } label: {

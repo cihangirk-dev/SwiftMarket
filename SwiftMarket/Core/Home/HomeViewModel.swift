@@ -13,9 +13,7 @@ class HomeViewModel: ObservableObject {
     @Published var categories: [Category] = []
     @Published var searchResults: [Product] = []
     @Published var isSearching = false
-    
     @Published var productsByCategory: [String: [Product]] = [:]
-    
     @Published var isLoading = false
     @Published var errorMessage: String?
     
@@ -71,7 +69,6 @@ class HomeViewModel: ObservableObject {
             let results = try await ProductService.shared.searchProducts(query: query)
             self.searchResults = results
         } catch {
-            print("Search error: \(error.localizedDescription)")
             self.searchResults = []
         }
 

@@ -6,13 +6,20 @@
 //
 
 import SwiftUI
-import Kingfisher // Kütüphaneyi ekledik
+import Kingfisher
+import SwiftData
 
 struct ProductCardView: View {
     
     let product: Product
-    let isFavorite: Bool
-    var onFavoriteToggle: () -> Void
+    
+    @Query private var favoriteItems: [FavoriteItem]
+    
+    @Environment(\.modelContext) private var modelContext
+    
+    var isFavorite: Bool {
+        FavoriteManager.shared.isFavorite(productId: product.id, items: favoriteItems)
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -52,7 +59,11 @@ struct ProductCardView: View {
                     Spacer()
                     
                     Button {
-                        onFavoriteToggle()
+                        FavoriteManager.shared.toggleFavorite(
+                            product: product,
+                            context: modelContext,
+                            items: favoriteItems
+                        )
                     } label: {
                         Image(systemName: isFavorite ? "heart.fill" : "heart")
                             .font(.body)

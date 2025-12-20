@@ -22,7 +22,7 @@ struct ProductDetailView: View {
     @Query private var favoriteItems: [FavoriteItem]
     
     var isFavorite: Bool {
-        return favoriteItems.contains(where: { $0.productId == product.id })
+        return FavoriteManager.shared.isFavorite(productId: product.id, items: favoriteItems)
     }
     
     var body: some View {
@@ -32,19 +32,32 @@ struct ProductDetailView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     
                     ZStack(alignment: .topTrailing) {
-                        KFImage(URL(string: product.thumbnail))
-                            .placeholder {
-                                ZStack {
-                                    Color.gray.opacity(0.1)
-                                    ProgressView()
+                        if !product.images.isEmpty {
+                            TabView {
+                                ForEach(product.images, id: \.self) { imageUrl in
+                                    KFImage(URL(string: imageUrl))
+                                        .resizable()
+                                        .scaledToFit()
                                 }
                             }
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: UIScreen.main.bounds.height * 0.4)
-                            .background(Color.white)
-                            .cornerRadius(20)
+                            .tabViewStyle(.page)
+                            .frame(height: 300)
+                            .indexViewStyle(.page(backgroundDisplayMode: .always))
+                            
+                        } else {
+                            KFImage(URL(string: product.thumbnail))
+                                .placeholder {
+                                    ZStack {
+                                        Color.gray.opacity(0.1)
+                                        ProgressView()
+                                    }
+                                }
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: .infinity)
+                                .frame(height: UIScreen.main.bounds.height * 0.4)
+                                .background(Color.white)
+                        }
                         
                         if product.discountPercentage > 0 {
                             Text("\(Int(product.discountPercentage))% OFF")
@@ -61,7 +74,9 @@ struct ProductDetailView: View {
                                 .font(.title).fontWeight(.bold).foregroundStyle(Color("SecondColor"))
                                 .lineLimit(2)
                             Spacer()
-                            Button { toggleFavorite() } label: {
+                            Button {
+                                FavoriteManager.shared.toggleFavorite(product: product, context: modelContext, items: favoriteItems)
+                            } label: {
                                 Image(systemName: isFavorite ? "heart.fill" : "heart")
                                     .font(.title2).foregroundStyle(isFavorite ? .red : .gray)
                                     .padding(10).background(Color(.systemGray6)).clipShape(Circle())
@@ -134,7 +149,7 @@ struct ProductDetailView: View {
                         Text("Total Price")
                             .font(.caption)
                             .foregroundStyle(.gray)
-                        Text("$\(product.price * Double(quantity), specifier: "%.2f")")
+                        Text("$\(product.discountPrice * Double(quantity), specifier: "%.2f")")
                             .font(.title2)
                             .fontWeight(.heavy)
                             .foregroundStyle(Color("BrandColor"))
@@ -176,8 +191,6 @@ struct ProductDetailView: View {
                         .padding(8).background(Color.white.opacity(0.8)).clipShape(Circle())
                 }
             }
-            ToolbarItem(placement: .automatic) {
-            }
         }
         .toolbar(.hidden, for: .tabBar)
     }
@@ -197,18 +210,5 @@ struct ProductDetailView: View {
             modelContext.insert(newItem)
         }
         showAddedAlert = true
-    }
-    
-    private func toggleFavorite() {
-        if let existingFav = favoriteItems.first(where: { $0.productId == product.id }) {
-            modelContext.delete(existingFav)
-        } else {
-            let newFav = FavoriteItem(
-                productId: product.id, title: product.title, price: product.price,
-                image: product.thumbnail, brand: product.brand, desc: product.description,
-                rating: product.rating, discountPercentage: product.discountPercentage, category: product.category
-            )
-            modelContext.insert(newFav)
-        }
     }
 }

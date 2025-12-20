@@ -42,19 +42,10 @@ struct ProductRowView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(products) { product in
-                        
-                        let isFavorite = favoriteItems.contains(where: { $0.productId == product.id })
-                        
                         NavigationLink {
                             ProductDetailView(product: product)
                         } label: {
-                            ProductCardView(
-                                product: product,
-                                isFavorite: isFavorite,
-                                onFavoriteToggle: {
-                                    toggleFavorite(product: product)
-                                }
-                            )
+                            ProductCardView(product: product)
                             .frame(width: UIScreen.main.bounds.width * 0.4)
                         }
                     }
@@ -62,28 +53,6 @@ struct ProductRowView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             }
-        }
-    }
-    
-    private func toggleFavorite(product: Product) {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
-        
-        if let existingFav = favoriteItems.first(where: { $0.productId == product.id }) {
-            modelContext.delete(existingFav)
-        } else {
-            let newFav = FavoriteItem(
-                productId: product.id,
-                title: product.title,
-                price: product.price,
-                image: product.thumbnail,
-                brand: product.brand,
-                desc: product.description,
-                rating: product.rating,
-                discountPercentage: product.discountPercentage,
-                category: product.category
-            )
-            modelContext.insert(newFav)
         }
     }
 }

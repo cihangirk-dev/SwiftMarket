@@ -47,15 +47,7 @@ struct FavoritesView: View {
                             NavigationLink {
                                 ProductDetailView(product: product)
                             } label: {
-                                ProductCardView(
-                                    product: product,
-                                    isFavorite: true,
-                                    onFavoriteToggle: {
-                                        withAnimation {
-                                            viewModel.deleteFavorite(item, context: modelContext)
-                                        }
-                                    }
-                                )
+                                ProductCardView(product: product)
                             }
                         }
                     }

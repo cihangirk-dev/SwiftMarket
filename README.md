@@ -50,4 +50,4 @@ The app is built using the **MVVM** design pattern to ensure separation of conce
 ## 👨‍💻 Author
 
 **Cihangir Kankaya**
-- LinkedIn: [linkedin.com/in/cihangir-kankaya](https://linkedin.com/in/cihangir-kankaya)
+- LinkedIn: [linkedin.com/in/cihangir-kankaya](https://www.linkedin.com/in/cihangir-kankaya-05168127b/)

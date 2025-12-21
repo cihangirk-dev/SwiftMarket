@@ -38,7 +38,7 @@ struct LoginView: View {
                     .padding()
                     .background(Color.white)
                     .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.systemGray5), lineWidth: 1)
@@ -52,7 +52,7 @@ struct LoginView: View {
                     .padding()
                     .background(Color.white)
                     .cornerRadius(12)
-                    .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.systemGray5), lineWidth: 1)

@@ -27,12 +27,11 @@ struct ProductCardView: View {
             ZStack(alignment: .top) {
                 KFImage(URL(string: product.thumbnail))
                     .placeholder {
-                        ZStack {
-                            Color.gray.opacity(0.1)
-                            ProgressView()
-                        }
+                        Color.gray.opacity(0.1)
+                        
                     }
-                    .fade(duration: 0.25)
+                    .cacheOriginalImage()
+                    .downsampling(size: CGSize(width: 200, height: 200))
                     .resizable()
                     .scaledToFit()
                     .aspectRatio(1, contentMode: .fit)

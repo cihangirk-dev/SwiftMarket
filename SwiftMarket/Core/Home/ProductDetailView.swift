@@ -47,11 +47,11 @@ struct ProductDetailView: View {
                         } else {
                             KFImage(URL(string: product.thumbnail))
                                 .placeholder {
-                                    ZStack {
-                                        Color.gray.opacity(0.1)
-                                        ProgressView()
-                                    }
+                                    Color.gray.opacity(0.1)
+
                                 }
+                                .cacheOriginalImage()
+                                .downsampling(size: CGSize(width: 200, height: 200))
                                 .resizable()
                                 .scaledToFit()
                                 .frame(maxWidth: .infinity)
@@ -174,7 +174,7 @@ struct ProductDetailView: View {
                 .padding(.bottom, 10)
             }
             .background(Color.white)
-            .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
+            .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: -2)
         }
         .navigationBarBackButtonHidden(true)
         .alert("Success", isPresented: $showAddedAlert) {

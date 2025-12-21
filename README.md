@@ -34,9 +34,10 @@ The app is built using the **MVVM** design pattern to ensure separation of conce
 ## 📸 Screenshots
 
 <div style="display: flex; flex-direction: row; gap: 10px;">
-  <img src="https://via.placeholder.com/200x400?text=Home" width="200" />
-  <img src="https://via.placeholder.com/200x400?text=Detail" width="200" />
-  <img src="https://via.placeholder.com/200x400?text=Cart" width="200" />
+  <img src="home.png" width="200" />
+  <img src="detail.png" width="200" />
+  <img src="cart.png" width="200" />
+  <img src="favorites.png" width="200" />
 </div>
 
 ## 🚀 How to Run
